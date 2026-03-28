@@ -1,0 +1,413 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🎧 MindSteps | رحلة الاستماع الممتعة</title>
+    <!-- Google Fonts: خطوط مرحة وواضحة -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Comic Neue', 'Poppins', 'Segoe UI', cursive, sans-serif;
+            background: radial-gradient(circle at 10% 30%, #FFE6B0, #FFB6C1, #A0D2FF);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* --- عناصر خلفية متحركة (أمواج صوتية ونجوم وكرات) --- */
+        .sound-wave {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: repeating-linear-gradient(90deg,
+                rgba(255,255,200,0.3) 0px,
+                rgba(255,255,200,0.3) 2px,
+                transparent 2px,
+                transparent 8px);
+            pointer-events: none;
+            z-index: 0;
+            animation: moveWave 8s linear infinite;
+        }
+
+        @keyframes moveWave {
+            0% { background-position: 0 0; }
+            100% { background-position: 80px 0; }
+        }
+
+        .bg-bubble {
+            position: fixed;
+            background: rgba(255, 255, 245, 0.4);
+            border-radius: 50%;
+            backdrop-filter: blur(3px);
+            animation: float 14s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-35px) rotate(5deg); opacity: 0.7; }
+            100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+        }
+
+        .star {
+            position: fixed;
+            background: #FFF7B0;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.5;
+            animation: twinkle 3s infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8);}
+            100% { opacity: 0.9; transform: scale(1.2);}
+        }
+
+        /* البطاقة الرئيسية بتصميم عصري وجذاب */
+        .magic-card {
+            background: rgba(255, 255, 250, 0.97);
+            border-radius: 80px;
+            padding: 30px 35px 45px;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.2), 0 0 0 6px #fff9cf, 0 0 0 12px #FFB34780;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(2px);
+            border: 1px solid #fff2c9;
+            transition: transform 0.3s ease;
+        }
+
+        .magic-card:hover {
+            transform: scale(1.01);
+        }
+
+        /* منطقة الماسكوت (أذن مرحة + شخصية) */
+        .mascot-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #FFF0C0, #FFE0A3);
+            width: fit-content;
+            margin: 0 auto 15px;
+            padding: 12px 30px;
+            border-radius: 120px;
+            box-shadow: inset 0 -2px 0 #FFC857, 0 8px 18px rgba(0,0,0,0.08);
+        }
+
+        .ear-icon {
+            font-size: 52px;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+            animation: earWiggle 2s infinite ease;
+        }
+
+        @keyframes earWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(8deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        .speech {
+            background: white;
+            border-radius: 50px;
+            padding: 8px 25px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #E67E22;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .speech::before {
+            content: "🎤";
+            position: absolute;
+            right: -28px;
+            top: -8px;
+            font-size: 28px;
+            opacity: 0.8;
+        }
+
+        /* الشعار */
+        .logo-wrapper {
+            margin: 8px 0;
+        }
+
+        .logo {
+            width: 140px;
+            max-width: 65%;
+            border-radius: 60px;
+            background: #FFF8E7;
+            padding: 8px 15px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 3px solid #FFB74D;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+            border-color: #FF9800;
+        }
+
+        /* العنوان الرئيسي */
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #F57C00, #FFB74D, #4FC3F7);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 20px 0 10px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            background: #E3F2FD;
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 60px;
+            color: #2C3E50;
+            margin-bottom: 25px;
+            font-weight: 700;
+            box-shadow: inset 0 -1px 0 #90CAF9, 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        /* حقول الإدخال بدون ايموجيات */
+        .input-group {
+            margin: 22px 0;
+            position: relative;
+        }
+
+        /* إزالة الأيقونات تماماً حتى لا تشتت الطفل */
+        input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.2rem;
+            font-family: 'Comic Neue', monospace;
+            border: 3px solid #FFE0A3;
+            border-radius: 70px;
+            background: #FFFEF7;
+            outline: none;
+            transition: all 0.25s;
+            color: #3E2A1F;
+            font-weight: 600;
+            text-align: right;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        input:focus {
+            border-color: #FFA726;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 6px #FFE0B280, 0 8px 20px rgba(0,0,0,0.1);
+            transform: scale(1.01);
+        }
+
+        input::placeholder {
+            color: #CEB27A;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* زر البداية المبهر */
+        .adventure-btn {
+            background: linear-gradient(115deg, #FF8A5C, #FF5252);
+            border: none;
+            padding: 18px 25px;
+            font-size: 1.7rem;
+            font-weight: bold;
+            font-family: 'Comic Neue', monospace;
+            color: white;
+            border-radius: 80px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 14px 0 #B23C1C;
+            transform: translateY(-4px);
+        }
+
+        .adventure-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 8px 0 #B23C1C;
+            background: linear-gradient(115deg, #FF7240, #FF3A3A);
+        }
+
+        .adventure-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0 #B23C1C;
+        }
+
+        /* ملاحظة تشجيعية مع إشارة للأذن */
+        .encourage {
+            margin-top: 30px;
+            font-size: 1rem;
+            background: #FFF0D6;
+            border-radius: 60px;
+            padding: 12px 20px;
+            color: #C45C1A;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            border-right: 8px solid #FFB347;
+        }
+
+        /* موجات صوتية حية */
+        .sound-preview {
+            margin: 15px auto 0;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            align-items: center;
+        }
+        .wave-bar {
+            width: 8px;
+            height: 20px;
+            background: #FFB347;
+            border-radius: 10px;
+            animation: soundWave 0.8s infinite alternate ease-in-out;
+        }
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 32px; background: #FF8A5C; }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 24px; }
+        .wave-bar:nth-child(4) { animation-delay: 0.1s; height: 28px; background: #FF8A5C; }
+        .wave-bar:nth-child(5) { animation-delay: 0.3s; height: 18px; }
+
+        @keyframes soundWave {
+            0% { transform: scaleY(0.5); opacity: 0.5; }
+            100% { transform: scaleY(1.2); opacity: 1; }
+        }
+
+        @media (max-width: 550px) {
+            .magic-card {
+                padding: 25px 20px 35px;
+            }
+            h1 {
+                font-size: 1.9rem;
+            }
+            .adventure-btn {
+                font-size: 1.4rem;
+                padding: 14px 12px;
+            }
+            .ear-icon {
+                font-size: 42px;
+            }
+            .speech {
+                font-size: 1rem;
+                padding: 5px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- خلفية ديناميكية (أمواج صوتية + فقاعات + نجوم) -->
+<div id="background-fun"></div>
+<div class="sound-wave"></div>
+
+<script>
+    (function createMagicalBackground() {
+        const container = document.getElementById('background-fun');
+        const colors = ['#FFDDAA', '#FFB7B2', '#B2F0FF', '#F9C7A3', '#D9E6A3', '#FFC2E0'];
+        for (let i = 0; i < 30; i++) {
+            const type = Math.random() > 0.65 ? 'star' : 'bubble';
+            const el = document.createElement('div');
+            if (type === 'star') {
+                el.classList.add('star');
+                const size = 10 + Math.random() * 24;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.top = Math.random() * 100 + '%';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDelay = Math.random() * 5 + 's';
+                el.style.animationDuration = 2 + Math.random() * 4 + 's';
+            } else {
+                el.classList.add('bg-bubble');
+                const size = 20 + Math.random() * 110;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                el.style.top = Math.random() * 100 + '%';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDuration = 10 + Math.random() * 18 + 's';
+                el.style.animationDelay = Math.random() * 10 + 's';
+            }
+            container.appendChild(el);
+        }
+    })();
+</script>
+
+<div class="magic-card">
+    <!-- منطقة الشخصية + الأذن (رمز السمع) -->
+    <div class="mascot-area">
+        <span class="ear-icon">👂🎧</span>
+        <div class="speech">هيا نصغي جيداً!</div>
+        <span class="ear-icon">🐼✨</span>
+    </div>
+
+    <!-- الشعار -->
+    <div class="logo-wrapper">
+        <img src="{% static 'assessment/logo.jpeg' %}" class="logo" alt="MindSteps Logo">
+    </div>
+
+    <h1>🎵 مغامرة الأصوات 🎶</h1>
+    <div class="subtitle">🧠 نميز الأصوات ونتعلم بذكاء 🦻</div>
+
+    <!-- موجات صوتية حية -->
+    <div class="sound-preview">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <input type="text" name="name" placeholder="الاسم" required autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <input type="number" name="age" placeholder="العمر" required min="6" max="10" step="1">
+        </div>
+
+        <button type="submit" class="adventure-btn">
+            🚀 أبدأ الرحلة السمعية 🎧
+        </button>
+    </form>
+
+    <div class="encourage">
+        <span>👂✨</span> استمع جيداً لكل سؤال! معاً نكتشف قوة أذنيك الذكية 🧠🎵
+        <span>🎤🌟</span>
+    </div>
+</div>
+
+</body>
+</html>

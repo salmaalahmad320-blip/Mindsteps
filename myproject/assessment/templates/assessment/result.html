@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📊 MindSteps | تقرير التحدي السمعي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Comic Neue', 'Poppins', 'Segoe UI', cursive, sans-serif;
+            background: radial-gradient(circle at 10% 30%, #FFE6B0, #FFB6C1, #A0D2FF);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .bg-bubble {
+            position: fixed;
+            background: rgba(255, 255, 245, 0.4);
+            border-radius: 50%;
+            backdrop-filter: blur(3px);
+            animation: float 14s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: fixed;
+            background: #FFF7B0;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.5;
+            animation: twinkle 3s infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-35px) rotate(5deg); opacity: 0.7; }
+            100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8);}
+            100% { opacity: 0.9; transform: scale(1.2);}
+        }
+
+        .magic-card {
+            background: rgba(255, 255, 250, 0.97);
+            border-radius: 80px;
+            padding: 35px 40px 50px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.2), 0 0 0 6px #fff9cf, 0 0 0 12px #FFB34780;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(2px);
+            border: 1px solid #fff2c9;
+            transition: transform 0.3s ease;
+        }
+
+        .magic-card:hover {
+            transform: scale(1.01);
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #FFF0C0, #FFE0A3);
+            border-radius: 100px;
+            padding: 8px 20px;
+            margin-bottom: 25px;
+        }
+
+        .kid-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #C45C1A;
+            background: white;
+            padding: 5px 20px;
+            border-radius: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .mascot-mini {
+            font-size: 2rem;
+            display: flex;
+            gap: 5px;
+        }
+
+        .score-section {
+            background: #FFF5E6;
+            border-radius: 60px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF8A5C, #FF5252);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 1.3rem;
+            color: #F57C00;
+            font-weight: bold;
+        }
+
+        .score-message {
+            font-size: 1.2rem;
+            color: #2C3E50;
+            margin-top: 10px;
+        }
+
+        .report-box {
+            text-align: right;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 40px;
+            padding: 18px 25px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+
+        .card.title {
+            background: linear-gradient(105deg, #FFB34720, #FF6B6B20);
+            border-right: 8px solid #FFB347;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #C45C1A;
+        }
+
+        .card.content {
+            background: #FFFEF7;
+            border: 1px solid #FFE0A3;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4A3724;
+        }
+
+        .back-home {
+            background: linear-gradient(115deg, #FF8A5C, #FF5252);
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            font-family: 'Comic Neue', monospace;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 0 #B23C1C;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        .back-home:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #B23C1C;
+        }
+
+        .back-home:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 0 #B23C1C;
+        }
+
+        @media (max-width: 650px) {
+            .magic-card {
+                padding: 20px;
+            }
+            .score-number {
+                font-size: 2.8rem;
+            }
+            .card.title {
+                font-size: 1.1rem;
+            }
+            .kid-name {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="background-fun"></div>
+<script>
+    (function addJoyfulBackground() {
+        const container = document.getElementById('background-fun');
+        const colors = ['#FFDDAA', '#FFB7B2', '#B2F0FF', '#F9C7A3', '#D9E6A3', '#FFC2E0'];
+        for (let i = 0; i < 30; i++) {
+            const type = Math.random() > 0.65 ? 'star' : 'bubble';
+            const el = document.createElement('div');
+            if (type === 'star') {
+                el.classList.add('star');
+                const size = 10 + Math.random() * 24;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.top = Math.random() * 100 + '%';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDelay = Math.random() * 5 + 's';
+                el.style.animationDuration = 2 + Math.random() * 4 + 's';
+            } else {
+                el.classList.add('bg-bubble');
+                const size = 20 + Math.random() * 110;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                el.style.top = Math.random() * 100 + '%';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDuration = 10 + Math.random() * 18 + 's';
+                el.style.animationDelay = Math.random() * 10 + 's';
+            }
+            container.appendChild(el);
+        }
+    })();
+</script>
+
+<div class="magic-card">
+    <div class="header-area">
+        <div class="kid-name">🏆 {{ name }} 🏆</div>
+        <div class="mascot-mini">
+            <span>👂📊</span>
+            <span>🐼🎉</span>
+        </div>
+    </div>
+
+    <div class="score-section">
+        <div class="score-number">{{ score }}%</div>
+        <div class="score-label">النتيجة النهائية</div>
+        <div class="score-message">
+            {% if score >= 80 %}
+                🌟 ممتاز 🌟
+            {% elif score >= 60 %}
+                👍 جيد جداً! استمر في التدريب 👍
+            {% elif score >= 40 %}
+                📚 عمل جيد! مع مزيد من التمرين ستتحسن 📚
+            {% else %}
+                🎯 لا تقلق! الممارسة تقوي الاداء 🎯
+            {% endif %}
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: 20px; color: #F57C00;">🧠 تقرير التحدي السمعي</h3>
+    <div class="report-box">
+        {% if analysis %}
+            {% for line in analysis.splitlines %}
+                {% if line.strip %}
+                    {% if "التقييم العام" in line %}
+                        <div class="card title">📊 {{ line }}</div>
+                    {% elif "تفاصيل الأداء" in line %}
+                        <div class="card title">📈 {{ line }}</div>
+                    {% elif "تحليل الأخطاء" in line %}
+                        <div class="card title">🔍 {{ line }}</div>
+                    {% elif "التفسير التربوي" in line %}
+                        <div class="card title">🎓 {{ line }}</div>
+                    {% elif "التوصيات" in line %}
+                        <div class="card title">💡 {{ line }}</div>
+                    {% else %}
+                        <div class="card content">{{ line }}</div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="card content">📭 لا يوجد تقرير متاح حالياً.</div>
+        {% endif %}
+    </div>
+
+    <a href="/" class="back-home">
+        🏠 العودة للصفحة الرئيسية
+    </a>
+</div>
+
+</body>
+</html>

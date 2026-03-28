@@ -1,0 +1,478 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🎧 MindSteps | تحدِّي الأصوات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* جميع الأنماط كما هي بدون تغيير */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Comic Neue', 'Poppins', 'Segoe UI', cursive, sans-serif;
+            background: radial-gradient(circle at 10% 30%, #FFE6B0, #FFB6C1, #A0D2FF);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .bg-bubble {
+            position: fixed;
+            background: rgba(255, 255, 245, 0.4);
+            border-radius: 50%;
+            backdrop-filter: blur(3px);
+            animation: float 14s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: fixed;
+            background: #FFF7B0;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.5;
+            animation: twinkle 3s infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-35px) rotate(5deg); opacity: 0.7; }
+            100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8);}
+            100% { opacity: 0.9; transform: scale(1.2);}
+        }
+
+        .magic-card {
+            background: rgba(255, 255, 250, 0.97);
+            border-radius: 80px;
+            padding: 30px 35px 45px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.2), 0 0 0 6px #fff9cf, 0 0 0 12px #FFB34780;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(2px);
+            border: 1px solid #fff2c9;
+            transition: transform 0.3s ease;
+        }
+
+        .magic-card:hover {
+            transform: scale(1.01);
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #FFF0C0, #FFE0A3);
+            border-radius: 100px;
+            padding: 8px 20px;
+            margin-bottom: 25px;
+        }
+
+        .kid-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #C45C1A;
+            background: white;
+            padding: 5px 20px;
+            border-radius: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .mascot-mini {
+            font-size: 2rem;
+            display: flex;
+            gap: 5px;
+        }
+
+        .progress-area {
+            margin: 15px 0 20px;
+        }
+        .progress-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #F57C00;
+            margin-bottom: 8px;
+        }
+        .progress-bar-bg {
+            background: #FFE0A3;
+            border-radius: 30px;
+            height: 18px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #FFB347, #FF6B6B);
+            width: {{ progress_percent }}%;
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.3s ease;
+        }
+
+        .question-area {
+            background: #FFF5E6;
+            border-radius: 70px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .question-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 20px;
+        }
+        .sound-btn {
+            background: linear-gradient(115deg, #FF8A5C, #FF5252);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 #B23C1C;
+            transform: translateY(-2px);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sound-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #B23C1C;
+        }
+        .sound-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 0 #B23C1C;
+        }
+
+        .sound-wave {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 15px auto 0;
+        }
+        .wave-bar {
+            width: 8px;
+            height: 20px;
+            background: #FFB347;
+            border-radius: 10px;
+            animation: soundWave 0.8s infinite alternate ease-in-out;
+        }
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 32px; background: #FF8A5C; }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 24px; }
+        .wave-bar:nth-child(4) { animation-delay: 0.1s; height: 28px; background: #FF8A5C; }
+        .wave-bar:nth-child(5) { animation-delay: 0.3s; height: 18px; }
+        @keyframes soundWave {
+            0% { transform: scaleY(0.5); opacity: 0.5; }
+            100% { transform: scaleY(1.2); opacity: 1; }
+        }
+
+        .answer-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+        .answer-btn {
+            flex: 1;
+            padding: 18px 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 8px 0 #aaa;
+            transform: translateY(-2px);
+        }
+        .answer-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #aaa;
+        }
+        .answer-btn.click-animation {
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 0 4px 0 #aaa;
+        }
+        .answer-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 0 #aaa;
+        }
+        .correct-btn {
+            background: linear-gradient(115deg, #00C853, #64DD17);
+            color: white;
+            box-shadow: 0 8px 0 #1B5E20;
+        }
+        .wrong-btn {
+            background: linear-gradient(115deg, #FF1744, #FF5252);
+            color: white;
+            box-shadow: 0 8px 0 #B71C1C;
+        }
+
+        .feedback-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+        .feedback-box.correct {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-right: 10px solid #4CAF50;
+        }
+        .feedback-box.wrong {
+            background: #FFEBEE;
+            color: #C62828;
+            border-right: 10px solid #F44336;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .next-btn {
+            background: linear-gradient(115deg, #FFB347, #FF8A5C);
+            border: none;
+            padding: 14px 25px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 0 #B23C1C;
+            transform: translateY(-2px);
+            margin-top: 10px;
+        }
+        .next-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #B23C1C;
+        }
+        .next-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 0 #B23C1C;
+        }
+
+        @media (max-width: 550px) {
+            .magic-card {
+                padding: 20px;
+            }
+            .question-text {
+                font-size: 1.4rem;
+            }
+            .answer-btn {
+                font-size: 1.2rem;
+                padding: 12px;
+            }
+            .sound-btn {
+                font-size: 1.2rem;
+                padding: 12px 20px;
+            }
+            .kid-name {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="background-fun"></div>
+<script>
+    (function addJoyfulBackground() {
+        const container = document.getElementById('background-fun');
+        const colors = ['#FFDDAA', '#FFB7B2', '#B2F0FF', '#F9C7A3', '#D9E6A3', '#FFC2E0'];
+        for (let i = 0; i < 30; i++) {
+            const type = Math.random() > 0.65 ? 'star' : 'bubble';
+            const el = document.createElement('div');
+            if (type === 'star') {
+                el.classList.add('star');
+                const size = 10 + Math.random() * 24;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.top = Math.random() * 100 + '%';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDelay = Math.random() * 5 + 's';
+                el.style.animationDuration = 2 + Math.random() * 4 + 's';
+            } else {
+                el.classList.add('bg-bubble');
+                const size = 20 + Math.random() * 110;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                el.style.top = Math.random() * 100 + '%';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDuration = 10 + Math.random() * 18 + 's';
+                el.style.animationDelay = Math.random() * 10 + 's';
+            }
+            container.appendChild(el);
+        }
+    })();
+</script>
+
+<div class="magic-card">
+    <div class="header-area">
+        <div class="kid-name">👋 {{ name }}</div>
+        <div class="mascot-mini">
+            <span>👂🎧</span>
+            <span>🐼✨</span>
+        </div>
+    </div>
+
+    <!-- شريط التقدم -->
+    <div class="progress-area">
+        <div class="progress-label">📊 السؤال {{ current_index }} من {{ total_questions }}</div>
+        <div class="progress-bar-bg">
+            <div class="progress-fill" style="width: {{ progress_percent }}%;"></div>
+        </div>
+    </div>
+
+    <div class="question-area">
+        <div class="question-text">
+            🎧 هل الكلمتان متشابهتان أم مختلفتان؟
+        </div>
+        <button class="sound-btn" onclick="playQuestion()">
+            🔊 استمع إلى الكلمتين
+        </button>
+        <div class="sound-wave">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+    </div>
+
+    <form method="POST" id="answerForm">
+        {% csrf_token %}
+        <div class="answer-buttons">
+            <button type="button" class="answer-btn correct-btn" id="btnSimilar" data-value="متشابه">
+                ✔ متشابه
+            </button>
+            <button type="button" class="answer-btn wrong-btn" id="btnDifferent" data-value="مختلف">
+                ❌ مختلف
+            </button>
+        </div>
+        <input type="hidden" name="answer" id="selectedAnswer" value="">
+        <input type="hidden" name="next" id="nextFlag" value="0">
+    </form>
+
+    <div id="nextButtonContainer" style="display: none;">
+        <button type="button" class="next-btn" onclick="submitAnswer()">
+            ⏩ السؤال التالي 🚀
+        </button>
+    </div>
+
+    <div id="feedbackBox" class="feedback-box" style="display: none;"></div>
+</div>
+
+<script>
+    let audio;
+    let selectedAnswerValue = null;
+    const correctAnswer = "{{ correct_answer }}";
+
+    function playQuestion() {
+        let text = encodeURIComponent(
+            `هل الكلمتان متشابهتان أم مختلفتان؟ {{ question.word1 }} {{ question.word2 }}`
+        );
+        let url = '/speak/?text=' + text;
+        if (audio) audio.pause();
+        audio = new Audio(url);
+        audio.play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    function showFeedback(selected) {
+        const feedbackDiv = document.getElementById('feedbackBox');
+        let isCorrect = (selected === correctAnswer);
+        if (isCorrect) {
+            feedbackDiv.className = 'feedback-box correct';
+            feedbackDiv.innerHTML = '🎉 أحسنت! ✅';
+        } else {
+            feedbackDiv.className = 'feedback-box wrong';
+            let correctText = (correctAnswer === 'متشابه') ? 'متشابه' : 'مختلف';
+            feedbackDiv.innerHTML = ` الإجابة الصحيحة هي "${correctText}"<br>لكن لا تقلق، ستتحسن مع التدريب! 🌟`;
+        }
+        feedbackDiv.style.display = 'block';
+    }
+
+    function onAnswerClick(button, value) {
+        if (selectedAnswerValue !== null) return;
+        selectedAnswerValue = value;
+
+        button.classList.add('click-animation');
+        setTimeout(() => button.classList.remove('click-animation'), 150);
+
+        document.getElementById('btnSimilar').disabled = true;
+        document.getElementById('btnDifferent').disabled = true;
+        document.getElementById('btnSimilar').style.opacity = '0.6';
+        document.getElementById('btnDifferent').style.opacity = '0.6';
+
+        document.getElementById('selectedAnswer').value = value;
+        showFeedback(value);
+        document.getElementById('nextButtonContainer').style.display = 'block';
+    }
+
+    function submitAnswer() {
+        if (selectedAnswerValue === null) return;
+        document.getElementById('nextFlag').value = '1';
+        document.getElementById('answerForm').submit();
+    }
+
+    document.getElementById('btnSimilar').addEventListener('click', function() {
+        onAnswerClick(this, 'متشابه');
+    });
+    document.getElementById('btnDifferent').addEventListener('click', function() {
+        onAnswerClick(this, 'مختلف');
+    });
+
+    window.onload = function() {
+        {% if first_time %}
+            let welcomeText = encodeURIComponent(`مرحباً يا {{ name }}، هيا نبدأ التحدي السمعي!`);
+            let welcomeAudio = new Audio('/speak/?text=' + welcomeText);
+            welcomeAudio.play().then(() => {
+                setTimeout(() => {
+                    playQuestion();
+                }, 1500);
+            }).catch(() => {
+                playQuestion();
+            });
+        {% else %}
+            playQuestion();
+        {% endif %}
+    };
+</script>
+</body>
+</html>
