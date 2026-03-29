@@ -15,17 +15,17 @@ def analyze_session(responses):
             timeout=60
         )
 
-        # ❗ فشل التشغيل
+        #  فشل التشغيل
         if result.returncode != 0:
             return "خطأ في تشغيل نموذج الذكاء الاصطناعي"
 
         output = result.stdout.strip()
 
-        # ❗ إذا ما رجع شيء
+        #  إذا ما رجع شيء
         if not output:
             return "لم يتم توليد تحليل"
 
-        # 🔁 تنظيف بسيط (مهم 👇)
+        #  تنظيف بسيط
         output = output.replace("```", "")  # لو رجع كود بلوك
         output = output.strip()
 
