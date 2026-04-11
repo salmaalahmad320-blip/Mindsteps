@@ -25,8 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'speech',      # تطبيق النطق
-    'assessment',  # تطبيق الاختبار
+    'assessment',
 ]
 
 MIDDLEWARE = [
